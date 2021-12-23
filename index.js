@@ -14,3 +14,40 @@ const getlocation = async () =>{
 
     return data;
  }
+
+ function getDayNight(){
+     let DayNight;
+     let d = new Date();
+
+     if (d.getHours() >= 6&& d.getHours() <= 19) {
+           DayNight = 'Day'; 
+    }else{
+        DayNight = 'Night';
+    }
+ }
+
+ function getIcon(weMain){
+     let icon;
+     switch(weMain){
+         case 'Thunderstorm':
+            icon = `${weMain}.svg`;
+            break;
+        case 'Drizzle':
+            icon = `${weMain}.svg`;
+            break;
+        case 'Rain':
+            icon = `${weMain}.svg`;
+            break;
+        case 'Snow':
+            icon = `${weMain}.svg`;
+            break;
+        case 'Clear':
+            const DayNight = getDayNight();
+            icon = `${weMain}-${DayNight}.svg`;
+            break;
+        case 'Atmosphere':
+            icon = `${weMain}.png`;
+            break;
+        }
+        return icon;
+ }
