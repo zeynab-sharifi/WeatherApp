@@ -2,16 +2,16 @@
 //lacation
 const getlocation = async () =>{
     const url = 'http://ip-api.com/json/{query}?fields=country,city,lat,lon,timezone';
-    const response = await fetch(url);
-    const data = await response .jason();
+    const responded = await fetch(url);
+    const data = await responded.json();
 
-    return data
+    return data;
 }
 //weather
- const getweather= async (url) =>{
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=a947f993ce697e31c765150735109374`;
-    const response = await fetch(url);
-    const data = await response .jason();
+ const getweather= async (lat , lon) =>{
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=b23222e676c4424fc8a037fca14ee913`;
+    const responded = await fetch(url);
+    const data = await responded.json();
 
     return data;
  }
@@ -20,7 +20,7 @@ const getlocation = async () =>{
      let DayNight;
      let d = new Date();
 
-     if (d.getHours() >= 6&& d.getHours() <= 19) {
+     if (d.getHours() >= 6 && d.getHours() <= 19) {
            DayNight = 'Day'; 
     }else{
         DayNight = 'Night';
@@ -61,3 +61,46 @@ function getTemp(weTemp){
     return temp = {kel:Math.floor(k), far:Math.floor(f),
     can:Math.floor(c)};
 }
+
+const loacati = document.querySelector('.timezone');
+const icon = document.querySelector('.icon-weather');
+const degSec = document.querySelector('.degree-section');
+const Deg = document.querySelector('.degree-section h2');
+const unit = document.querySelector('.degree-section span');
+const tempDe = document.querySelector('.temperature-description');
+
+
+getlocation()
+    .then(locData =>{
+        const timezone = locData.timezone;
+        console.log(timezone)
+        loacati.textContent = timezone;
+        return getweather(locData.lat, locData.lon);
+    }).then(weData => {
+        const weTemp = weData.main.temp;
+        const weMain = weData.weather[0].main;
+        const weDes = weData.weather[0].description;
+        console.log(weTemp,weMain,weDes);
+
+
+        const iconName = getIcon(weMain);
+        icon.innerHTML = `<img src="icons/${iconName}"></img>`;
+
+        Deg.textContent = Math.floor(weTemp);
+        unit.textContent = 'k';
+
+        dese.addEventListiner('click' , function(e){
+            if(unit.textContent == 'k'){
+                Deg.textContent = getTemp(weTemp).far;
+                unit.textContent = 'F';
+            }
+            else if(unit.textContent == 'F'){
+                Deg.textContent = getTemp(weTemp).can;
+                unit.textContent = 'C';
+            }
+            else{
+                Deg.textContent = getTemp(weTemp).kal;
+                unit.textContent = 'K';
+            }
+        })
+    })
